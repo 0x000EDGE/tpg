@@ -1,42 +1,58 @@
 <template>
-    <div class="p-6 flex flex-col gap-2" v-if="results">
-        <div
-            v-for="d in results.departures"
-            class="flex gap-3 bg-surface-100 p-2 rounded"
-            :class="{
-                'bg-blue-300': d.real_time === actualTime.format('HH:mm'),
-            }"
-        >
-            <div class="name w-9 flex justify-center items-start">
-                {{ `${d.category}${d.line}` }}
-            </div>
-            <div class="destination flex-1 items-start">
-                {{ d.destination }}
-            </div>
-            <div v-if="d.real_time === actualTime.format('HH:mm')"></div>
-            <div class="flex ga©p-3" v-else>
-                <div class="time w-[4rem] flex justify-end gap-1 items-start">
-                    <span>{{ d.planned_time }}</span>
+    <div class="p-3 h-screen flex flex-col gap-2">
+        <div class="flex flex-col gap-2 overflow-y-auto flex-1" v-if="results">
+            <div
+                class="bg-surface-100 p-2 rounded flex gap-2"
+                v-for="(dep, id) in results.departures"
+            >
+                <div class="w-[2rem] font-bold">
+                    {{ dep.category }}{{ dep.line }}
                 </div>
                 <div
-                    class="time w-[1.7rem] flex justify-center gap-1 items-start"
+                    class="w-[19.5px] h-[19.5px] bg-blue-500 text-xs text-white flex justify-center items-center rounded font-bold"
                 >
-                    <span v-if="d.delay !== 0" class="text-red-500"
-                        >+{{ d.delay }}</span
-                    >
+                    {{ dep.platform }}
+                </div>
+                <div class="flex-1">{{ dep.destination }}</div>
+                <div class="flex">
+                    <div class="time w-[2.6rem]">
+                        <Icon
+                            v-if="dep.real_time === actualTime"
+                            icon="material-symbols:train-outline"
+                            width="19.5"
+                            height="19.5"
+                        />
+                        <span v-else>{{ dep.planned_time }}</span>
+                    </div>
+                    <div class="delay w-[1.8rem] flex-1 flex justify-start">
+                        <span
+                            class="text-red-500"
+                            v-if="
+                                dep.delay !== 0 && dep.real_time !== actualTime
+                            "
+                            >+{{ dep.delay }}</span
+                        >
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="w-full flex justify-center p-3 text-surface-400">
-            Dernière actualisation {{ lastRefresh.format("HH:mm:ss") }}
+        <div
+            class="flex flex-col gap-2 overflow-y-auto flex-1 justify-center items-center"
+            v-else
+        >
+            <i
+                class="pi pi-spin pi-spinner text-surface-400"
+                style="font-size: 3rem"
+            ></i>
         </div>
-        {{ actualTime }}
+        <div class="flex justify-center text-surface-400" v-if="lastRefresh">
+            Dernière actualisation : {{ lastRefresh }}
+        </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { Icon } from "@iconify/vue";
 import dayjs from "dayjs";
 
 const results = ref(null);
@@ -46,7 +62,7 @@ let refreshInterval = null;
 let verificationInterval = null;
 
 async function fetchDepartures() {
-    lastRefresh.value = dayjs(Date());
+    lastRefresh.value = dayjs(Date()).format("HH:mm");
     try {
         const data = await $fetch("/api/departures");
         results.value = data;
@@ -56,15 +72,15 @@ async function fetchDepartures() {
 }
 
 function refreshActualTime() {
-    actualTime.value = dayjs(Date());
+    actualTime.value = dayjs(Date()).format("HH:mm");
 }
 
 onMounted(() => {
     fetchDepartures();
-    refreshInterval = setInterval(fetchDepartures, 10000); // 10 sec
+    refreshInterval = setInterval(fetchDepartures, 1000); // 10 sec
 
     refreshActualTime();
-    verificationInterval = setInterval(refreshActualTime, 500); // 1sec
+    verificationInterval = setInterval(refreshActualTime, 1000); // 1sec
 });
 
 onBeforeUnmount(() => {
