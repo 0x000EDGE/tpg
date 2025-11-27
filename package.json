@@ -19,6 +19,7 @@
         "@primeuix/themes": "^1.0.0",
         "@primevue/forms": "^4.3.4",
         "chart.js": "^4.4.8",
+        "dayjs": "^1.11.19",
         "primeicons": "^7.0.0",
         "primevue": "^4.3.1",
         "tailwindcss-primeui": "^0.5.1"

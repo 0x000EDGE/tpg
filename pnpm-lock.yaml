@@ -17,6 +17,9 @@ importers:
       chart.js:
         specifier: ^4.4.8
         version: 4.4.9
+      dayjs:
+        specifier: ^1.11.19
+        version: 1.11.19
       primeicons:
         specifier: ^7.0.0
         version: 7.0.0
@@ -1689,6 +1692,9 @@ packages:
   data-uri-to-buffer@4.0.1:
     resolution: {integrity: sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==}
     engines: {node: '>= 12'}
+
+  dayjs@1.11.19:
+    resolution: {integrity: sha512-t5EcLVS6QPBNqM2z8fakk/NKel+Xzshgt8FFKAn+qwlD1pzZWxh0nVCrvFK7ZDb6XucZeF9z8C7CBWTRIVApAw==}
 
   db0@0.3.2:
     resolution: {integrity: sha512-xzWNQ6jk/+NtdfLyXEipbX55dmDSeteLFt/ayF+wZUU5bzKgmrDOxmInUTbyVRp46YwnJdkDA1KhB7WIXFofJw==}
@@ -6429,6 +6435,8 @@ snapshots:
   cuint@0.2.2: {}
 
   data-uri-to-buffer@4.0.1: {}
+
+  dayjs@1.11.19: {}
 
   db0@0.3.2: {}
 
